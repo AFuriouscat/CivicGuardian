@@ -11,4 +11,4 @@ def show():
         "Flagged": ["No", "Yes"]
     })
     st.button("Export CSV")
-    footer.show()
+   

@@ -4,16 +4,17 @@ from google.genai import types
 from dotenv import load_dotenv
 
 load_dotenv()
-api_key = os.getenv("GEMINI_API_KEY")
+api_key = os.getenv("GEMINI_API_KEY")  # Make sure to set this in your .env file
 
 client = genai.Client(api_key=api_key)
 
 SAFEGUARD_INSTRUCTIONS = (
-    "You are a legal rights assistant based on the legal grounds of the Philippines. "
+    "You are a legal rights assistant based on the Constitution of the Philippines. "
     "Only answer questions related to human rights, legal protections, or justice. "
     "Politely reject questions that are unrelated, inappropriate, or not legally grounded."
 )
 
+# Safety filters
 SAFETY_SETTINGS = [
     types.SafetySetting(category="HARM_CATEGORY_HARASSMENT", threshold="BLOCK_LOW_AND_ABOVE"),
     types.SafetySetting(category="HARM_CATEGORY_HATE_SPEECH", threshold="BLOCK_LOW_AND_ABOVE"),
@@ -26,26 +27,24 @@ def get_legal_answer(user_prompt: str) -> str:
         contents = [
             types.Content(
                 role="user",
-                parts=[types.Part.from_text(text=f"{SAFEGUARD_INSTRUCTIONS}\n\nUser: {user_prompt}")]
+                parts=[types.Part.from_text(f"{SAFEGUARD_INSTRUCTIONS}\n\nUser: {user_prompt}")]
             )
         ]
 
         config = types.GenerateContentConfig(
-            temperature=0.2,
-            top_p=0.9,
-            max_output_tokens=1024,
             safety_settings=SAFETY_SETTINGS,
             response_mime_type="text/plain"
         )
 
         response_text = ""
         for chunk in client.models.generate_content_stream(
-            model="gemini-1.5-flash",
+            model="gemini-1.5-flash-8b",
             contents=contents,
             config=config
         ):
             response_text += chunk.text or ""
-
+        
         return response_text.strip() or "⚠️ Gemini did not return a usable answer."
+
     except Exception as e:
-        return f"⚠️ Gemini could not process this request. Error: {str(e)}"
+        return "⚠️ Gemini could not process this request. Try again later or refine your question."
