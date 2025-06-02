@@ -5,7 +5,20 @@ from components import footer
 from utils.gemini_helper import get_legal_answer_with_memory
 
 def show():
-    st.markdown("<h2>🛡️ Rights Assistant</h2>", unsafe_allow_html=True)
+    # st.markdown("<h2>🛡️ Rights Assistant</h2>", unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div style="margin: 1rem 0; text-align: center;">
+        <div style="background-color: #1169c0; color: white; padding: 2rem; border-radius: 1rem; width: 30%; margin: auto;">
+            <span style="font-size: 2rem; font-weight: bold;">
+            Rights Assistant
+            </span>
+        </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    
     st.markdown("#### Ask a legal question to CivGuardian Bot!")
     st.markdown(
         "<small style='color:gray;'>"
@@ -31,7 +44,7 @@ def show():
         )
 
         # Clear-chat button
-        if st.button("🗑️ Clear Chat", key="clear_chat"):
+        if st.button("Clear Chat", key="clear_chat"):
             st.session_state.chat_history = []
             st.rerun()
 
@@ -41,17 +54,18 @@ def show():
             .chat-container {
                 height: 400px;
                 overflow-y: auto;
-                background-color: #f9f9f9;
+                background-color: transparent; 
                 padding: 1rem;
                 border-radius: 10px;
-                border: 1px solid #ddd;
+                border: 1px solid var(--secondary-background-color, #ddd);
                 display: flex;
                 flex-direction: column;
                 gap: 0.5rem;
             }
             .user-msg {
                 align-self: flex-end;
-                background-color: #DCF8C6;
+                background-color: var(--primary-color, #1169c0);  /* fallback blue */
+                color: var(--text-color, white);
                 padding: 0.75rem;
                 border-radius: 12px;
                 max-width: 75%;
@@ -59,16 +73,17 @@ def show():
             }
             .bot-msg {
                 align-self: flex-start;
-                background-color: #ffffff;
-                border: 1px solid #ccc;
+                background-color: var(--secondary-background-color, #f0f0f0);  /* fallback light gray */
+                color: var(--text-color, black);
                 padding: 0.75rem;
                 border-radius: 12px;
                 max-width: 75%;
                 word-wrap: break-word;
+                border: 1px solid var(--primary-color, #1169c0);
             }
             </style>
         """, unsafe_allow_html=True)
-
+        
         # Render chat history
         chat_html = "<div class='chat-container'>"
         for msg in st.session_state.chat_history:
@@ -118,5 +133,4 @@ def show():
         st.image(cropped, use_container_width=True)
 
     st.divider()
-    
     

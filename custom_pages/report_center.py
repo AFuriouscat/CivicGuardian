@@ -4,7 +4,19 @@ from PIL import Image
 from components import footer
 
 def show():
-    st.header("📝 Report Center")
+    # st.header("📝 Report Center")
+    st.markdown(
+        """
+        <div style="margin: 1rem 0; text-align: center;">
+        <div style="background-color: #1169c0; color: white; padding: 2rem; border-radius: 1rem; width: 30%; margin: auto;">
+            <span style="font-size: 2rem; font-weight: bold;">
+            Report Center
+            </span>
+        </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     left_col, right_col = st.columns([2, 1])
 
