@@ -1,9 +1,28 @@
 import streamlit as st
-from components import login, footer, profile
-from pages import dashboard, rights_assistant, report_center, scorecard, about
-# We'll create new pages for about and contact later or just add st.markdown for now
 
 st.set_page_config(page_title="CivicGuardian", layout="wide")
+
+# Removes the Side Tab
+st.markdown("""
+    <style>
+    /* Hide sidebar completely */
+    [data-testid="stSidebar"] {
+        display: none !important;
+    }
+
+    /* Hide sidebar toggle button (hamburger icon) */
+    [data-testid="collapsedControl"] {
+        display: none !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Other Imports
+from components import login, footer, profile
+from custom_pages import dashboard, rights_assistant, report_center, scorecard, about
+from streamlit_option_menu import option_menu
+
+# We'll create new pages for about and contact later or just add st.markdown for now
 
 # Session State Setup
 if 'authenticated' not in st.session_state:
@@ -53,46 +72,68 @@ st.markdown("""
 # -----------------------------
 st.markdown(f"""
     <div class='header-footer'>
-        <div style='display:flex;justify-content:space-between;align-items:center;'>
+        <div style='display:flex;justify-content:space-between;flex-wrap:wrap;align-items:center;gap:1rem;'>
+            <div>
+            </div>
             <div style='font-size:1.5rem;font-weight:bold;'>CivicGuardian</div>
             <div>
+            </div>
+            <div>
+            </div>
+            <div>
+            </div>
+            <div>
                 {"👤 " + st.session_state.username if st.session_state.authenticated else "🔐 Guest"}
+            </div>
+            <div>
             </div>
         </div>
     </div>
 """, unsafe_allow_html=True)
 
 # -----------------------------
-# Tab Buttons (No Page Reload)
+# Horizontal
 # -----------------------------
-num_tabs = 6 + int(st.session_state.is_admin) + 1 + 3
-button_width = 120  # px width per button
-widths = [button_width] * num_tabs
-tab_cols = st.columns(widths, gap="small")
 
-tab_labels = ["ABOUT", "REPORT", "ASSISTANT", "DASHBOARD", "SCORECARD", "CONTACT US"]
+from streamlit_option_menu import option_menu
+
+# Build menu items based on user state
+menu_labels = ["ABOUT", "REPORT", "ASSISTANT", "DASHBOARD", "SCORECARD", "CONTACT US"]
+menu_icons = ["info-circle", "file-earmark-text", "shield-lock", "speedometer", "bar-chart", "envelope"]
+
 if st.session_state.is_admin:
-    tab_labels.append("Admin Panel")
+    menu_labels.append("Admin Panel")
+    menu_icons.append("tools")
 
-for i, label in enumerate(tab_labels):
-    with tab_cols[i]:
-        if st.button(label, key=f"tab_{label}"):
-            mapping = {
-                "DASHBOARD": "dashboard",
-                "REPORT": "report",
-                "ASSISTANT": "rights",
-                "SCORECARD": "scorecard",
-                "ABOUT": "about",
-                "CONTACT US": "contact",
-                "Admin Panel": "admin",
-            }
-            st.session_state.active_tab = mapping[label]
+# Add login/profile button at end
+profile_label = "👤 Profile" if st.session_state.authenticated else "🔐 LOGIN"
+menu_labels.append(profile_label)
+menu_icons.append("person-circle")
 
-# Profile/Login button
-with tab_cols[-1]:
-    profile_label = "👤 Profile" if st.session_state.authenticated else "🔐 LOGIN"
-    if st.button(profile_label, key="tab_profile"):
-        st.session_state.active_tab = "profile"
+# Show horizontal menu
+selected_menu = option_menu(
+    menu_title=None,
+    options=menu_labels,
+    icons=menu_icons,
+    orientation="horizontal",
+    default_index=0
+)
+
+# Map labels to internal tab keys
+label_to_tab_key = {
+    "DASHBOARD": "dashboard",
+    "REPORT": "report",
+    "ASSISTANT": "rights",
+    "SCORECARD": "scorecard",
+    "ABOUT": "about",
+    "CONTACT US": "contact",
+    "Admin Panel": "admin",
+    "👤 Profile": "profile",
+    "🔐 LOGIN": "profile",
+}
+
+# Update active tab in session state
+st.session_state.active_tab = label_to_tab_key.get(selected_menu, "about")
 
 # -----------------------------
 # Page Routing
@@ -121,31 +162,8 @@ elif tab == "profile":
 # -----------------------------
 # Footer
 # -----------------------------
-st.markdown("""
-    <div class='header-footer' style='margin-top: 3rem;'>
-        <div style='display:flex;justify-content:space-between;flex-wrap:wrap;'>
-            <div>
-            </div>
-            <div>
-                <h4>Stay Connected</h4>
-                <a href='https://facebook.com' target='_blank' style='margin-right:10px;'>📘</a>
-                <a href='https://twitter.com' target='_blank' style='margin-right:10px;'>🐦</a>
-                <a href='https://youtube.com' target='_blank' style='margin-right:10px;'>▶️</a>
-                <a href='https://instagram.com' target='_blank'>📸</a>
-            </div>
-            <div>
-                <h4>Links</h4>
-                <a href='#' style='color:white;display:block;'>About Us & Legal Info</a>
-                <a href='#' style='color:white;display:block;'>Contact Us</a>
-                <a href='#' style='color:white;display:block;'>Privacy Policy</a>
-                <a href='#' style='color:white;display:block;'>Terms of Use</a>
-                <a href='#' style='color:white;display:block;'>Equal Opportunity</a>
-            </div>
-            <div style='text-align:right;'>
-                <p>By: Hack Pack 2025</p>
-            </div>
-            <div>
-            </div>
-        </div>
-    </div>
-""", unsafe_allow_html=True)
+footer.show()
+
+
+
+

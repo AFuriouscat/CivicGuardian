@@ -1,6 +1,8 @@
 # pages/dashboard.py
 import streamlit as st
+
 from components import footer
+from PIL import Image
 
 import streamlit as st
 

@@ -1,6 +1,7 @@
 import streamlit as st
 from components import login, footer, profile
 from pages import dashboard, rights_assistant, report_center, scorecard, admin_panel
+from streamlit_option_menu import option_menu
 
 st.set_page_config(page_title="CivicGuardian", layout="wide")
 
@@ -27,6 +28,41 @@ st.markdown(f"""
     </div>
 """, unsafe_allow_html=True)
 
+# -----------------------------
+# Horizontal Navigation
+# -----------------------------
+# Determine available menu items based on authentication
+
+menu_items = [
+    {"label": "Dashboard", "value": "dashboard", "icon": "speedometer"},
+    {"label": "Rights Assistant", "value": "rights", "icon": "shield-lock"},
+    {"label": "Report Center", "value": "report", "icon": "clipboard-data"},
+    {"label": "Scorecard", "value": "scorecard", "icon": "bar-chart"},
+]
+
+if st.session_state.is_admin:
+    menu_items.append({"label": "Admin Panel", "value": "admin", "icon": "tools"})
+
+# Append Profile/Login as the last item
+profile_label = "👤 Profile" if st.session_state.authenticated else "🔐 LOGIN"
+menu_items.append({"label": profile_label, "value": "profile", "icon": "person-circle"})
+
+# Extract labels, icons, and values
+labels = [item["label"] for item in menu_items]
+icons = [item["icon"] for item in menu_items]
+values = [item["value"] for item in menu_items]
+
+# Render the horizontal menu
+selected_tab = option_menu(
+    menu_title=None,
+    options=labels,
+    icons=icons,
+    orientation="horizontal",
+    default_index=0
+)
+
+# Set the corresponding internal tab key
+st.session_state.active_tab = values[labels.index(selected_tab)]
 # -----------------------------
 # Tab Buttons (No Page Reload)
 # -----------------------------
@@ -310,3 +346,316 @@ footer_html = """
     </div>
 """
 st.markdown(footer_html, unsafe_allow_html=True)
+
+
+
+
+
+
+
+# pages/rights_assistant.py
+import streamlit as st
+from PIL import Image
+from components import footer
+from utils.gemini_helper import get_legal_answer
+
+def show():
+    st.markdown("<h2>🛡️ Rights Assistant</h2>", unsafe_allow_html=True)
+    st.markdown("#### Ask a legal question to CivGuardian Bot!")
+    st.markdown(
+        "<small style='color:gray;'>Disclaimer: CivicGuardian Bot is powered by AI and may generate inaccurate information. Please verify with a legal professional.</small>",
+        unsafe_allow_html=True
+    )
+
+    left_col, right_col = st.columns([2, 1])
+
+    with left_col:
+        if "chat_history" not in st.session_state:
+            st.session_state.chat_history = []
+
+        if "language" not in st.session_state:
+            st.session_state.language = "English"
+
+        st.session_state.language = st.selectbox(
+            "Language", ["English", "Filipino"],
+            index=["English", "Filipino"].index(st.session_state.language)
+        )
+
+        # Inject CSS for the scrollable chat container
+        st.markdown("""
+            <style>
+            .chat-container {
+                height: 400px;
+                overflow-y: auto;
+                background-color: #f9f9f9;
+                padding: 1rem;
+                border-radius: 10px;
+                border: 1px solid #ddd;
+                display: flex;
+                flex-direction: column;
+            }
+            .user-msg {
+                align-self: flex-end;
+                background-color: #DCF8C6;
+                padding: 0.75rem;
+                border-radius: 12px;
+                max-width: 75%;
+                margin-bottom: 10px;
+                word-wrap: break-word;
+            }
+            .bot-msg {
+                align-self: flex-start;
+                background-color: #ffffff;
+                border: 1px solid #ccc;
+                padding: 0.75rem;
+                border-radius: 12px;
+                max-width: 75%;
+                margin-bottom: 10px;
+                word-wrap: break-word;
+            }
+            </style>
+        """, unsafe_allow_html=True)
+
+        # Render chat history inside scrollable div
+        chat_html = "<div class='chat-container'>"
+        for msg in st.session_state.chat_history:
+            if msg["role"] == "user":
+                chat_html += f"<div class='user-msg'>{msg['content']}</div>"
+            else:
+                chat_html += f"<div class='bot-msg'>{msg['content']}</div>"
+        chat_html += "</div>"
+        st.markdown(chat_html, unsafe_allow_html=True)
+
+        # Input and send in one line
+        with st.form("chat_input", clear_on_submit=True):
+            col1, col2 = st.columns([8, 2])
+            with col1:
+                user_input = st.text_input("You:", key="chat_text_input", label_visibility="collapsed")
+            with col2:
+                submitted = st.form_submit_button("Send")
+
+            if submitted and user_input.strip():
+                st.session_state.chat_history.append({"role": "user", "content": user_input})
+                with st.spinner("Gemini is thinking..."):
+                    gemini_response = get_legal_answer(user_input)
+                    st.session_state.chat_history.append({"role": "bot", "content": gemini_response})
+                st.rerun()
+
+    with right_col:
+        image = Image.open("assets/assistant-page.jpg")
+        width, height = image.size
+        desired_ratio = 3 / 4
+        if height / width > desired_ratio:
+            new_height = int(width * desired_ratio)
+            top = (height - new_height) // 2
+            bottom = top + new_height
+            left = 0
+            right = width
+        else:
+            new_width = int(height / desired_ratio)
+            left = (width - new_width) // 2
+            right = left + new_width
+            top = 0
+            bottom = height
+        cropped = image.crop((left, top, right, bottom))
+        st.image(cropped, use_container_width=True)
+
+    st.divider()
+
+
+
+
+
+
+
+
+
+
+# pages/rights_assistant.py
+import streamlit as st
+from PIL import Image
+from components import footer
+from utils.gemini_helper import get_legal_answer
+
+def show():
+    st.markdown("<h2>🛡️ Rights Assistant</h2>", unsafe_allow_html=True)
+    st.markdown("#### Ask a legal question to CivGuardian Bot!")
+    st.markdown(
+        "<small style='color:gray;'>Disclaimer: CivicGuardian Bot is powered by AI and may generate inaccurate information. Please verify with a legal professional.</small>",
+        unsafe_allow_html=True
+    )
+
+    left_col, right_col = st.columns([2, 1])
+
+    with left_col:
+        if "chat_history" not in st.session_state:
+            st.session_state.chat_history = []
+
+        if "language" not in st.session_state:
+            st.session_state.language = "English"
+
+        st.session_state.language = st.selectbox(
+            "Language", ["English", "Filipino"],
+            index=["English", "Filipino"].index(st.session_state.language)
+        )
+
+        # Inject CSS for the scrollable chat container
+        st.markdown("""
+            <style>
+            .chat-container {
+                height: 400px;
+                overflow-y: auto;
+                background-color: #f9f9f9;
+                padding: 1rem;
+                border-radius: 10px;
+                border: 1px solid #ddd;
+                display: flex;
+                flex-direction: column;
+            }
+            .user-msg {
+                align-self: flex-end;
+                background-color: #DCF8C6;
+                padding: 0.75rem;
+                border-radius: 12px;
+                max-width: 75%;
+                margin-bottom: 10px;
+                word-wrap: break-word;
+            }
+            .bot-msg {
+                align-self: flex-start;
+                background-color: #ffffff;
+                border: 1px solid #ccc;
+                padding: 0.75rem;
+                border-radius: 12px;
+                max-width: 75%;
+                margin-bottom: 10px;
+                word-wrap: break-word;
+            }
+            </style>
+        """, unsafe_allow_html=True)
+
+        # Render chat history inside scrollable div
+        chat_html = "<div class='chat-container'>"
+        for msg in st.session_state.chat_history:
+            if msg["role"] == "user":
+                chat_html += f"<div class='user-msg'>{msg['content']}</div>"
+            else:
+                chat_html += f"<div class='bot-msg'>{msg['content']}</div>"
+        chat_html += "</div>"
+        st.markdown(chat_html, unsafe_allow_html=True)
+
+        # Input and send in one line
+        with st.form("chat_input", clear_on_submit=True):
+            col1, col2 = st.columns([8, 2])
+            with col1:
+                user_input = st.text_input("You:", key="chat_text_input", label_visibility="collapsed")
+            with col2:
+                submitted = st.form_submit_button("Send")
+
+            if submitted and user_input.strip():
+                st.session_state.chat_history.append({"role": "user", "content": user_input})
+                with st.spinner("Gemini is thinking..."):
+                    gemini_response = get_legal_answer(user_input)
+                    st.session_state.chat_history.append({"role": "bot", "content": gemini_response})
+                st.rerun()
+
+    with right_col:
+        image = Image.open("assets/assistant-page.jpg")
+        width, height = image.size
+        desired_ratio = 3 / 4
+        if height / width > desired_ratio:
+            new_height = int(width * desired_ratio)
+            top = (height - new_height) // 2
+            bottom = top + new_height
+            left = 0
+            right = width
+        else:
+            new_width = int(height / desired_ratio)
+            left = (width - new_width) // 2
+            right = left + new_width
+            top = 0
+            bottom = height
+        cropped = image.crop((left, top, right, bottom))
+        st.image(cropped, use_container_width=True)
+
+    st.divider()
+
+
+
+import streamlit as st
+
+from custom_pages import dashboard, rights_assistant, report_center, scorecard, admin_panel
+from PIL import Image
+def show():
+    
+    cards = [
+        {"title": "📢 Report an Incident", "button": "Go to Report", "key": "go_report", "page_func": report_center.show},
+        {"title": "🤖 AI Assistant", "button": "Ask Assistant", "key": "go_rights", "page_func": rights_assistant.show},
+        {"title": "📊 Justice Dashboard", "button": "View Dashboard", "key": "go_dashboard", "page_func": dashboard.show},
+        {"title": "🏛 Institution Scorecard", "button": "View Scorecard", "key": "go_scorecard", "page_func": scorecard.show},
+    ]
+
+    # Initialize session state for navigation
+    if "current_page" not in st.session_state:
+        st.session_state.current_page = "about"
+
+    # Navigation rendering
+    if st.session_state.current_page != "about":
+        for card in cards:
+            if card["key"] == st.session_state.current_page:
+                # Add a "Back to About" button
+                if st.button("⬅️ Back to About", key="back_to_about"):
+                    st.session_state.current_page = "about"
+                    st.rerun()
+
+                # Call the selected page's function
+                card["page_func"]()
+                return
+
+    # Styles for About page
+    st.markdown("""
+        <style>
+        .hero {
+            background-color: #003366;
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            font-size: 2rem;
+            margin: 2rem 5rem;
+        }
+        .card {
+            background-color: #f2f2f2;
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Hero banner
+    st.markdown("<div class='hero'>One platform to report, understand and monitor justice in your city.</div>", unsafe_allow_html=True)
+
+    # 4-column layout of cards
+    cols = st.columns(4)
+    for col, card in zip(cols, cards):
+        with col:
+            st.markdown("<div class='card'>", unsafe_allow_html=True)
+            st.markdown(f"<div class='card-title'>{card['title']}</div>", unsafe_allow_html=True)
+            if st.button(card["button"], key=card["key"]):
+                st.session_state.current_page = card["key"]
+                st.rerun()
+            st.markdown("</div>", unsafe_allow_html=True)

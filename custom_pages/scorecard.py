@@ -1,5 +1,7 @@
 # pages/scorecard.py
 import streamlit as st
+
+from PIL import Image
 from components import footer
 
 def show():
@@ -9,4 +11,3 @@ def show():
     st.metric("Court Efficiency", "48%")
     st.metric("Resolved Cases with Feedback", "34")
     st.warning("⚠️ AI detected pattern: Delays in Barangay 143 reporting")
-    footer.show()

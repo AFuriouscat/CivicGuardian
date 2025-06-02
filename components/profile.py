@@ -10,5 +10,5 @@ def show():
         st.session_state.authenticated = False
         st.session_state.username = ""
         st.session_state.is_admin = False
-        st.experimental_rerun()
+        st.rerun()
     footer.show()

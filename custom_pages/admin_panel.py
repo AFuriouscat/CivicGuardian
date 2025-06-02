@@ -1,6 +1,8 @@
 # pages/admin_panel.py
 import streamlit as st
+
 from components import footer
+from PIL import Image
 
 def show():
     st.header("🔐 Admin Panel")
@@ -11,4 +13,3 @@ def show():
         "Flagged": ["No", "Yes"]
     })
     st.button("Export CSV")
-   
