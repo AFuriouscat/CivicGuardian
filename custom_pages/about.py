@@ -130,7 +130,7 @@ def show():
                 "LinkedIn": "https://www.linkedin.com/in/isiah-gabriel-arcos-416148338/",
                 "Instagram": "https://www.instagram.com/justafuriouscat/"
             },
-            "img_path": "assets/isiah.jpg"
+            "img_path": "assets/Arcos.jpg"
         },
         {
             "name": "Natasha Julia S. Yabut",
@@ -140,7 +140,7 @@ def show():
                 "Facebook": "https://www.facebook.com/n.julia.s.yabut/",
                 "LinkedIn": "https://www.linkedin.com/in/n-julia-s-yabut/"
             },
-            "img_path": "assets/natasha.jpg"
+            "img_path": "assets/Yabut.jpg"
         },
         {
             "name": "Alron David V. Mendoza",
@@ -154,7 +154,7 @@ def show():
             "img_path": "assets/alron.jpg"
         },
         {
-            "name": "Sample Member",
+            "name": "Yhasmen Nogales",
             "email": "sample@example.com",
             "role": "Project Manager",
             "socials": {

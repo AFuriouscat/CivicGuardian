@@ -73,6 +73,7 @@ st.markdown(
         <div></div>
         <div></div>
         <div></div>
+        <div></div>
         <div>
           {"👤 " + st.session_state.username if st.session_state.authenticated else "👤 Guest"}
         </div>
@@ -115,6 +116,43 @@ try:
     default_index = menu_labels.index(tab_to_label[st.session_state.active_tab])
 except KeyError:
     default_index = 0
+
+# Insert your CSS for styling here
+st.markdown(
+    """
+    <style>
+    /* Container width */
+    .nav.nav-pills {
+        max-width: 90vw;
+        margin: 0 auto;
+        background-color: #f0f0f0;
+        border-radius: 0.5rem;
+        padding: 0.25rem;
+    }
+    /* Each tab */
+    .nav-link {
+        color: #333 !important;
+        background-color: transparent !important;
+        border-radius: 0.5rem !important;
+        margin: 0 0.25rem;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+    /* Selected/active tab */
+    .nav-link.active {
+        background-color: #004080 !important;
+        color: white !important;
+        font-weight: 700;
+    }
+    /* Hover effect on tabs */
+    .nav-link:hover {
+        background-color: #d9e8ff !important;
+        color: #004080 !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 selected_menu = option_menu(
     menu_title=None,
