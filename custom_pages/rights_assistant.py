@@ -54,18 +54,18 @@ def show():
             .chat-container {
                 height: 400px;
                 overflow-y: auto;
-                background-color: transparent; 
+                background-color: transparent;
                 padding: 1rem;
                 border-radius: 10px;
-                border: 1px solid var(--secondary-background-color, #ddd);
+                border: 1px solid #ccc;
                 display: flex;
                 flex-direction: column;
                 gap: 0.5rem;
             }
             .user-msg {
                 align-self: flex-end;
-                background-color: var(--primary-color, #1169c0);  /* fallback blue */
-                color: var(--text-color, white);
+                background-color: #1169c0;
+                color: white;
                 padding: 0.75rem;
                 border-radius: 12px;
                 max-width: 75%;
@@ -73,13 +73,13 @@ def show():
             }
             .bot-msg {
                 align-self: flex-start;
-                background-color: var(--secondary-background-color, #f0f0f0);  /* fallback light gray */
-                color: var(--text-color, black);
+                background-color: #f0f0f0;
+                color: black;
+                border: 1px solid #1169c0;
                 padding: 0.75rem;
                 border-radius: 12px;
                 max-width: 75%;
                 word-wrap: break-word;
-                border: 1px solid var(--primary-color, #1169c0);
             }
             </style>
         """, unsafe_allow_html=True)
