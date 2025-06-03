@@ -178,7 +178,7 @@ def show():
                     st.warning(f"Image not found: {m['img_path']}")
                 st.markdown(f"<h2 style='font-size:1.75rem; text-align:center;'>{m['name']}</h2>", unsafe_allow_html=True)
                 st.markdown(f"<h3 style='text-align:center; font-weight:normal;'>{m['role']}</h3>", unsafe_allow_html=True)
-                st.markdown(f"<h1 style='text-align:center;'><a href='mailto:{m['email']}' style='text-decoration:none;'>Email</a></h1>", unsafe_allow_html=True)
+                st.markdown(f"<h5 style='text-align:center;'><a href='mailto:{m['email']}' style='text-decoration:none;'>Email</a></h5>", unsafe_allow_html=True)
 
                 for platform, url in m["socials"].items():
-                    st.markdown(f"<h1 style='text-align:center;'><a href='{url}' target='_blank' style='text-decoration:none;'>{platform}</a></h1>", unsafe_allow_html=True)
+                    st.markdown(f"<h5 style='text-align:center;'><a href='{url}' target='_blank' style='text-decoration:none;'>{platform}</a></h5>", unsafe_allow_html=True)
