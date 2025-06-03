@@ -3,8 +3,6 @@ import math
 from PIL import Image
 
 def show():
-    # st.title("About CivicGuardian")
-
     # --- Banner Image ---
     banner_path = "assets/banner-about-page.jpeg"
     try:
@@ -26,6 +24,7 @@ def show():
     except Exception:
         st.warning(f"Could not load banner image at `{banner_path}`.")
 
+    # --- Section: About CivicGuardian ---
     st.markdown(
         """
         <div style="margin: 1rem 0; text-align: center;">
@@ -41,37 +40,21 @@ def show():
 
     st.markdown("---")
 
-    # --- Vision & Mission Section (Justified & Centered) ---
-    st.markdown(
-        """
-        <style>
-        .indented-paragraph {
-            text-indent: 2em;
-            padding-left: 1em;
-            margin-bottom: 1em;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-
     # --- Mission & Vision section ---
     st.markdown("<h3 style='text-align:center;'>Mission and Vision</h3>", unsafe_allow_html=True)
 
-    # 👇 You must define col2 before using it!
     col1, col2, col3 = st.columns([3, 6, 3])
-
     with col2:
         st.markdown(
             """
             <div style='text-align:justify; font-size:20px;'>
                 <strong>CivicGuardian</strong><br><br>
-                <p class='indented-paragraph'>“One platform to report, understand and monitor justice in your city.”</p>
-                <p class='indented-paragraph'>A high‐fidelity web app combining anonymous reporting + AI rights assistant + legal case transparency + institutional accountability dashboard.</p>
-                <p class='indented-paragraph'>Citizens can report abuse, get legal assistance, and track how institutions respond—all powered by AI and wrapped in a clean, interactive UI.</p>
+                <p style='text-indent:2em;'>“One platform to report, understand and monitor justice in your city.”</p>
+                <p style='text-indent:2em;'>A high‐fidelity web app combining anonymous reporting + AI rights assistant + legal case transparency + institutional accountability dashboard.</p>
+                <p style='text-indent:2em;'>Citizens can report abuse, get legal assistance, and track how institutions respond—all powered by AI and wrapped in a clean, interactive UI.</p>
                 <strong>This website aims to be a solution to the following SDG:</strong><br><br>
-                <p class='indented-paragraph'><strong>SDG 11</strong> focuses on making cities inclusive, safe, resilient, and sustainable, emphasizing urban planning and management for better living conditions.</p>
-                <p class='indented-paragraph'><strong>SDG 16</strong> prioritizes peace, justice, and strong institutions, aiming to promote peaceful and inclusive societies and ensure access to justice for all.</p>
+                <p style='text-indent:2em;'><strong>SDG 11</strong> focuses on making cities inclusive, safe, resilient, and sustainable.</p>
+                <p style='text-indent:2em;'><strong>SDG 16</strong> prioritizes peace, justice, and strong institutions.</p>
             </div>
             """,
             unsafe_allow_html=True
@@ -79,9 +62,9 @@ def show():
 
     st.markdown("---")
 
-    # --- Core Features Section (Justified & Centered) ---
+    # --- Core Features Section ---
     st.markdown("<h3 style='text-align:center;'>Core Features</h3>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([3, 6, 3])
+
     with col2:
         st.markdown(
             """
@@ -98,18 +81,18 @@ def show():
                     &emsp;• Available in Filipino + English</li><br>
                 <li><strong>Justice Dashboard</strong><br>
                     &emsp;• Interactive charts: number of reports per region, type, status<br>
-                    &emsp;• Track public cases (e.g. from public legal datasets or simulated JSON)<br>
-                    &emsp;• Gemini‐generated summaries: “Case backlog in Quezon City is growing. Avg. resolution time: 287 days.”</li><br>
+                    &emsp;• Track public cases<br>
+                    &emsp;• Gemini‐generated summaries</li><br>
                 <li><strong>Institution Scorecard</strong><br>
                     &emsp;• Transparency scores for courts, barangays, LGUs<br>
-                    &emsp;• User feedback/ratings from resolved cases<br>
-                    &emsp;• AI detects patterns of delay, corruption risks (mocked if no real data)</li><br>
+                    &emsp;• User feedback/ratings<br>
+                    &emsp;• AI detects delay/corruption risks</li><br>
             </ul>
             <br>
-            <strong>Coming Soon (Optional Features):</strong><br>
+            <strong>Coming Soon:</strong><br>
             &emsp;• PWA offline mode<br>
-            &emsp;• Email notifications to NGOs/Government units<br>
-            &emsp;• Public API for open‐data advocacy groups<br>
+            &emsp;• Email alerts to NGOs/LGUs<br>
+            &emsp;• Public API for advocacy groups<br>
             &emsp;• Reputation system for verified submissions
             </div>
             """, unsafe_allow_html=True
@@ -117,9 +100,9 @@ def show():
 
     st.markdown("---")
 
-    # --- Meet the Team Section (1 Row, 4 Columns) ---
+    # --- Meet the Team Section ---
     st.markdown("<h3 style='text-align:center;'>Meet the Team</h3>", unsafe_allow_html=True)
-    
+
     members = [
         {
             "name": "Isiah Gabriel A. Arcos",
@@ -151,74 +134,50 @@ def show():
                 "LinkedIn": "https://www.linkedin.com/in/alron-david-mendoza-427220297/",
                 "Instagram": "https://www.instagram.com/alrownie/"
             },
-            "img_path": "assets/alron.jpg"
+            "img_path": "assets/Mendoza.jpg"
         },
         {
             "name": "Yhasmen Nogales",
-            "email": "sample@example.com",
+            "email": "yhasmennogales04@gmail.com",
             "role": "Project Manager",
             "socials": {
-                "LinkedIn": "https://www.linkedin.com/in/sample-member/"
+                "Facebook": "https://www.facebook.com/yhasmen.nogales.2024",
+                "LinkedIn": "https://www.linkedin.com/in/yhasmen-nogales/"
             },
-            "img_path": "assets/placeholder.jpg"
+            "img_path": "assets/Nogales.jpg"
         }
     ]
-
-    st.markdown(
-        """
-        <style>
-        .circle-img {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #ccc;
-            margin-bottom: 10px;
-        }
-        .member-box {
-            text-align: center;
-            padding: 1rem;
-        }
-        .member-box h4,
-        .member-box p,
-        .member-box a {
-            margin: 0.3rem 0;
-            text-align: center !important;
-            display: block;
-        }
-        .social-links {
-            margin-top: 0.5rem;
-        }
-        .social-links a {
-            margin: 0 0.3rem;
-            color: #003366;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        .social-links a:hover {
-            text-decoration: underline;
-        }
-        </style>
-
-        """,
-        unsafe_allow_html=True,
-    )
 
     cols_per_row = 4
     rows = math.ceil(len(members) / cols_per_row)
 
     for i in range(rows):
-        row_members = members[i*cols_per_row:(i+1)*cols_per_row]
+        row_members = members[i * cols_per_row:(i + 1) * cols_per_row]
         cols = st.columns(len(row_members))
         for col, m in zip(cols, row_members):
             with col:
-                st.markdown("<div class='member-box'>", unsafe_allow_html=True)
-                st.markdown(f"<img src='{m['img_path']}' class='circle-img' />", unsafe_allow_html=True)
-                st.markdown(f"<h4>{m['name']}</h4>", unsafe_allow_html=True)
-                st.markdown(f"<p><em>{m['role']}</em></p>", unsafe_allow_html=True)
-                st.markdown(f"<a href='mailto:{m['email']}'>{m['email']}</a>", unsafe_allow_html=True)
-                st.markdown("<div class='social-links'>", unsafe_allow_html=True)
-                for platform, link in m["socials"].items():
-                    st.markdown(f"<a href='{link}' target='_blank'>{platform}</a>", unsafe_allow_html=True)
-                st.markdown("</div></div>", unsafe_allow_html=True)
+                try:
+                    img = Image.open(m["img_path"])
+                    w, h = img.size
+                    desired_ratio = 1  # 1:1 aspect ratio
+                    if h / w > desired_ratio:
+                        new_height = int(w * desired_ratio)
+                        top = (h - new_height) // 2
+                        bottom = top + new_height
+                        left = 0
+                        right = w
+                    else:
+                        new_width = int(h / desired_ratio)
+                        left = (w - new_width) // 2
+                        right = left + new_width
+                        top = 0
+                        bottom = h
+                    cropped = img.crop((left, top, right, bottom))
+                    st.image(cropped, use_container_width=True)
+                except:
+                    st.warning(f"Image not found: {m['img_path']}")
+                st.markdown(f"**<h1>{m['name']}</h1>**")
+                st.markdown(f"*{m['role']}*")
+                st.markdown(f"[📧 Email]({m['email']})")
+                for platform, url in m["socials"].items():
+                    st.markdown(f"[{platform}]({url})", unsafe_allow_html=True)

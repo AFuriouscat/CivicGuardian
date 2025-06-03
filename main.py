@@ -185,14 +185,11 @@ if new_tab != st.session_state.active_tab:
 tab = st.session_state.active_tab
 
 if tab == "home":
-    # ====== Home page content embedded here ======
-
-    # 1) Wide banner across the top
-    banner_path = "assets/banner-about-page.jpeg"  # adjust path as needed
+    # ====== 1. Hero Banner Section ======
+    banner_path = "assets/banner-about-page.jpeg"
     try:
         banner_img = Image.open(banner_path)
         w, h = banner_img.size
-        # Crop to a very wide ratio, e.g. 7:1
         target_ratio = 7 / 1
         if w / h > target_ratio:
             new_w = int(h * target_ratio)
@@ -209,9 +206,10 @@ if tab == "home":
     except Exception:
         st.warning(f"Could not load banner image at `{banner_path}`.")
 
-    # 2) Hero Text
+    # ====== 2. Hero Text ======
     st.markdown(
         """
+        <div></div>
         <div style="margin:2rem 5rem; text-align:center;">
           <div style="background-color:#003366; color:white; padding:2rem; border-radius:1rem;">
             <span style="font-size:2rem; font-weight:bold;">
@@ -219,11 +217,12 @@ if tab == "home":
             </span>
           </div>
         </div>
+        <div></div>
         """,
         unsafe_allow_html=True,
     )
 
-    # 3) Four-column card section
+    # ====== 3. Navigation Cards ======
     cards = [
         {
             "title": "Report an Incident",
@@ -256,7 +255,6 @@ if tab == "home":
 
     for col, card in zip(cols, cards):
         with col:
-            # Load & crop each card’s image to ~4:3 ratio
             try:
                 img = Image.open(card["image_path"])
                 w, h = img.size
@@ -276,18 +274,152 @@ if tab == "home":
             except Exception:
                 st.warning(f"Could not load image at `{card['image_path']}`.")
 
-            # Title under the image
             st.markdown(
                 f"<div style='text-align:center; font-weight:bold; margin-top:1rem;'>{card['title']}</div>",
                 unsafe_allow_html=True,
             )
 
-            # When clicked, set active_tab and rerun → matches the horizontal tab
             if st.button(card["button"], key=card["tab_key"]):
                 st.session_state.active_tab = card["tab_key"]
                 st.rerun()
 
     st.markdown("</div>", unsafe_allow_html=True)
+
+    # ====== 4. Two-Column Highlight Section ======
+    col3, col1, col2, col4 = st.columns([3, 3, 5, 3])
+
+    with col1:
+        # Load the image
+        image = Image.open("assets/dashboard-page.jpg")
+
+        # Get original dimensions
+        width, height = image.size
+
+        # Desired aspect ratio: 3:2 (height:width)
+        desired_ratio = 3 / 4  # height divided by width
+
+        # Compute new crop box dimensions
+        # Strategy: Fix width, compute height from ratio (height = width * 1.5)
+        if height / width > desired_ratio:
+            # Image is too tall — crop height
+            new_height = int(width * desired_ratio)
+            top = (height - new_height) // 2
+            bottom = top + new_height
+            left = 0
+            right = width
+        else:
+            # Image is too wide — crop width
+            new_width = int(height / desired_ratio)
+            left = (width - new_width) // 2
+            right = left + new_width
+            top = 0
+            bottom = height
+
+        # Crop to 3:2 ratio
+        cropped = image.crop((left, top, right, bottom))
+
+        # Show in column width
+        st.image(cropped, use_container_width=True)
+    with col2:
+        st.markdown(
+            """
+            <div style="padding:1rem;">
+              <h2>Speak Up, Stay Safe</h2>
+              <p style="font-size:1.1rem;">
+              CivicGuardian makes it easy to report incidents anonymously and securely. 
+              Whether it’s harassment, abuse of power, or civic concerns — your voice matters, 
+              and we help make sure it’s heard.
+              </p>
+              <p style="margin-top:1rem;">
+                <b>Click "Go to Report" to get started.</b>
+              </p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    # ====== 5. Community Block (Gray Box) ======
+    st.markdown(
+        """
+        <div style="
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            background-color: #003366;
+            padding: 2rem 4rem;
+            color: white;
+            box-sizing: border-box;
+        ">
+            <h2 style="text-align:center;">Our Community</h2>
+            <p style="text-align:center; max-width:800px; margin: 1rem auto;">
+                CivicGuardian thrives because of its engaged citizens, active volunteers, and 
+                local leaders who believe in accountability and transparency. Together, we build 
+                safer and more just cities.
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # Now simulate the stat cards using Streamlit's column layout
+    st.markdown(
+        """
+        <div></div>
+        <style>
+        .stat-card {
+            text-align: center;
+            color: white;
+            padding-top: 1rem;
+        }
+        .stat-card h3 {
+            margin-bottom: 0.5rem;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown(
+            """
+            <div class="stat-card">
+                <h3>Members</h3>
+                <div style="font-size:2.5rem;">👥</div>
+                <h1>2,350+</h1>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    with col2:
+        st.markdown(
+            """
+            <div class="stat-card">
+                <h3>Reports Solved</h3>
+                <div style="font-size:2.5rem;">✅</div>
+                <h1>1,120+</h1>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    with col3:
+        st.markdown(
+            """
+            <div class="stat-card">
+                <h3>Monitored Cities</h3>
+                <div style="font-size:2.5rem;">🌍</div>
+                <h1>48</h1>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
 
 elif tab == "report":
     report_center.show()

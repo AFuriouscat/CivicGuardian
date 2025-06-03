@@ -839,3 +839,131 @@ footer.show()
 
 
 
+
+
+
+
+
+
+
+
+    # ====== Home page content embedded here ======
+
+    # 1) Wide banner across the top
+    banner_path = "assets/banner-about-page.jpeg"  # adjust path as needed
+    try:
+        banner_img = Image.open(banner_path)
+        w, h = banner_img.size
+        # Crop to a very wide ratio, e.g. 7:1
+        target_ratio = 7 / 1
+        if w / h > target_ratio:
+            new_w = int(h * target_ratio)
+            left = (w - new_w) // 2
+            right = left + new_w
+            top, bottom = 0, h
+        else:
+            new_h = int(w / target_ratio)
+            top = (h - new_h) // 2
+            bottom = top + new_h
+            left, right = 0, w
+        banner_cropped = banner_img.crop((left, top, right, bottom))
+        st.image(banner_cropped, use_container_width=True)
+    except Exception:
+        st.warning(f"Could not load banner image at `{banner_path}`.")
+
+    # 2) Hero Text
+    st.markdown(
+        """
+        <div style="margin:2rem 5rem; text-align:center;">
+          <div style="background-color:#003366; color:white; padding:2rem; border-radius:1rem;">
+            <span style="font-size:2rem; font-weight:bold;">
+              One platform to report, understand and monitor justice in your city.
+            </span>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # 3) Four-column card section
+    cards = [
+        {
+            "title": "Report an Incident",
+            "button": "Go to Report",
+            "tab_key": "report",
+            "image_path": "assets/report-page.jpg",
+        },
+        {
+            "title": "AI Assistant",
+            "button": "Ask Assistant",
+            "tab_key": "assistant",
+            "image_path": "assets/assistant-page.jpg",
+        },
+        {
+            "title": "Justice Dashboard",
+            "button": "View Dashboard",
+            "tab_key": "dashboard",
+            "image_path": "assets/dashboard-page.jpg",
+        },
+        {
+            "title": "Institution Scorecard",
+            "button": "View Scorecard",
+            "tab_key": "scorecard",
+            "image_path": "assets/scorecard-page.jpg",
+        },
+    ]
+
+    st.markdown("<div style='margin: 2rem 5rem;'>", unsafe_allow_html=True)
+    cols = st.columns(4, gap="large")
+
+    for col, card in zip(cols, cards):
+        with col:
+            # Load & crop each card’s image to ~4:3 ratio
+            try:
+                img = Image.open(card["image_path"])
+                w, h = img.size
+                ratio = 4 / 3
+                if w / h > ratio:
+                    new_w = int(h * ratio)
+                    left = (w - new_w) // 2
+                    right = left + new_w
+                    top, bottom = 0, h
+                else:
+                    new_h = int(w / ratio)
+                    top = (h - new_h) // 2
+                    bottom = top + new_h
+                    left, right = 0, w
+                cropped = img.crop((left, top, right, bottom))
+                st.image(cropped, use_container_width=True)
+            except Exception:
+                st.warning(f"Could not load image at `{card['image_path']}`.")
+
+            # Title under the image
+            st.markdown(
+                f"<div style='text-align:center; font-weight:bold; margin-top:1rem;'>{card['title']}</div>",
+                unsafe_allow_html=True,
+            )
+
+            # When clicked, set active_tab and rerun → matches the horizontal tab
+            if st.button(card["button"], key=card["tab_key"]):
+                st.session_state.active_tab = card["tab_key"]
+                st.rerun()
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
