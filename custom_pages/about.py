@@ -60,43 +60,43 @@ def show():
             unsafe_allow_html=True
         )
 
-    st.markdown("---")
+        st.markdown("---")
 
     # --- Core Features Section ---
     st.markdown("<h3 style='text-align:center;'>Core Features</h3>", unsafe_allow_html=True)
 
-    with col2:
-        st.markdown(
-            """
-            <div style='text-align:justify; font-size:18px;'>
-            <ul style='list-style-type:none; padding-left:0;'>
-                <li><strong>Report Center</strong><br>
-                    &emsp;• Anonymous or logged‐in incident report<br>
-                    &emsp;• Text + photo upload<br>
-                    &emsp;• Gemini 2.0 classifies the type of violation<br>
-                    &emsp;• Auto‐suggests relevant law & next step</li><br>
-                <li><strong>Rights Assistant (Gemini AI Chat)</strong><br>
-                    &emsp;• Ask: “What are my rights if I was harassed in public?”<br>
-                    &emsp;• Gemini explains laws in plain language<br>
-                    &emsp;• Available in Filipino + English</li><br>
-                <li><strong>Justice Dashboard</strong><br>
-                    &emsp;• Interactive charts: number of reports per region, type, status<br>
-                    &emsp;• Track public cases<br>
-                    &emsp;• Gemini‐generated summaries</li><br>
-                <li><strong>Institution Scorecard</strong><br>
-                    &emsp;• Transparency scores for courts, barangays, LGUs<br>
-                    &emsp;• User feedback/ratings<br>
-                    &emsp;• AI detects delay/corruption risks</li><br>
-            </ul>
-            <br>
-            <strong>Coming Soon:</strong><br>
-            &emsp;• PWA offline mode<br>
-            &emsp;• Email alerts to NGOs/LGUs<br>
-            &emsp;• Public API for advocacy groups<br>
-            &emsp;• Reputation system for verified submissions
-            </div>
-            """, unsafe_allow_html=True
-        )
+    st.markdown(
+        """
+        <div style='text-align:justify; font-size:18px;'>
+        <ul style='list-style-type:none; padding-left:0;'>
+            <li><strong>Report Center</strong><br>
+                &emsp;• Anonymous or logged‐in incident report<br>
+                &emsp;• Text + photo upload<br>
+                &emsp;• Gemini 2.0 classifies the type of violation<br>
+                &emsp;• Auto‐suggests relevant law & next step</li><br>
+            <li><strong>Rights Assistant (Gemini AI Chat)</strong><br>
+                &emsp;• Ask: “What are my rights if I was harassed in public?”<br>
+                &emsp;• Gemini explains laws in plain language<br>
+                &emsp;• Available in Filipino + English</li><br>
+            <li><strong>Justice Dashboard</strong><br>
+                &emsp;• Interactive charts: number of reports per region, type, status<br>
+                &emsp;• Track public cases<br>
+                &emsp;• Gemini‐generated summaries</li><br>
+            <li><strong>Institution Scorecard</strong><br>
+                &emsp;• Transparency scores for courts, barangays, LGUs<br>
+                &emsp;• User feedback/ratings<br>
+                &emsp;• AI detects delay/corruption risks</li><br>
+        </ul>
+        <br>
+        <strong>Coming Soon:</strong><br>
+        &emsp;• PWA offline mode<br>
+        &emsp;• Email alerts to NGOs/LGUs<br>
+        &emsp;• Public API for advocacy groups<br>
+        &emsp;• Reputation system for verified submissions
+        </div>
+        """, unsafe_allow_html=True
+    )
+
 
     st.markdown("---")
 
