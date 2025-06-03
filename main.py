@@ -369,20 +369,32 @@ if tab == "home":
     # Now simulate the stat cards using Streamlit's column layout
     st.markdown(
         """
-        <div></div>
         <style>
         .stat-card {
             text-align: center;
-            color: white;
             padding-top: 1rem;
         }
-        .stat-card h3 {
+        .stat-card h3, .stat-card h1, .stat-card div {
             margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .stat-card h3, .stat-card h1, .stat-card div {
+                color: white;
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .stat-card h3, .stat-card h1, .stat-card div {
+                color: #111;
+            }
         }
         </style>
         """,
         unsafe_allow_html=True
     )
+
 
     border2, col1, col2, col3, border2 = st.columns([2, 2, 2, 2, 1])
 
