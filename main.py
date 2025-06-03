@@ -62,26 +62,41 @@ st.markdown(
 )
 
 # -----------------------------
-# Header (logo + user indicator)
+# Header + Embedded Navigation
 # -----------------------------
+def nav_item(label, tab_key, is_active=False):
+    base_style = "padding: 0.5rem 1rem; margin: 0 0.25rem; border-radius: 0.5rem; text-decoration: none;"
+    if is_active:
+        style = f"{base_style} background-color: #004080; color: white; font-weight: bold;"
+    else:
+        style = f"{base_style} background-color: transparent; color: #eee;"
+    return f"<a href='?tab={tab_key}' style='{style}'>{label}</a>"
+
+current_tab = st.query_params.get("tab", "home")
+st.session_state.active_tab = current_tab
+
+tabs_html = "".join([
+    nav_item("HOME", "home", current_tab == "home"),
+    nav_item("REPORT", "report", current_tab == "report"),
+    nav_item("ASSISTANT", "assistant", current_tab == "assistant"),
+    nav_item("DASHBOARD", "dashboard", current_tab == "dashboard"),
+    nav_item("SCORECARD", "scorecard", current_tab == "scorecard"),
+    nav_item("ABOUT US", "about_us", current_tab == "about_us"),
+    nav_item("Admin Panel", "admin", current_tab == "admin") if st.session_state.is_admin else "",
+    nav_item("👤 Profile" if st.session_state.authenticated else "LOGIN", "profile", current_tab == "profile"),
+])
+
 st.markdown(
     f"""
     <div class='header-footer'>
-      <div style='display:flex; justify-content:space-between; flex-wrap:wrap; align-items:center; gap:1rem;'>
-        <div></div>
+      <div style='display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;'>
         <div style='font-size:1.5rem; font-weight:bold;'>CivicGuardian</div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div>
-          {"👤 " + st.session_state.username if st.session_state.authenticated else "👤 Guest"}
-        </div>
-        <div></div>
+        <div style='flex-grow:1; text-align:center;'>{tabs_html}</div>
+        <div>{"👤 " + st.session_state.username if st.session_state.authenticated else "👤 Guest"}</div>
       </div>
     </div>
     """,
-    unsafe_allow_html=True,
+    unsafe_allow_html=True
 )
 
 # -----------------------------
