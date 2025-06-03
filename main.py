@@ -210,6 +210,7 @@ if tab == "home":
     st.markdown(
         """
         <div></div>
+        <div></div>
         <div style="margin:2rem 5rem; text-align:center;">
           <div style="background-color:#003366; color:white; padding:2rem; border-radius:1rem;">
             <span style="font-size:2rem; font-weight:bold;">
@@ -217,6 +218,7 @@ if tab == "home":
             </span>
           </div>
         </div>
+        <div></div>
         <div></div>
         """,
         unsafe_allow_html=True,
@@ -286,7 +288,7 @@ if tab == "home":
     st.markdown("</div>", unsafe_allow_html=True)
 
     # ====== 4. Two-Column Highlight Section ======
-    col3, col1, col2, col4 = st.columns([3, 3, 5, 3])
+    col3, col1, col2, col4 = st.columns([1, 3, 5, 1])
 
     with col1:
         # Load the image
@@ -382,7 +384,7 @@ if tab == "home":
         unsafe_allow_html=True
     )
 
-    col1, col2, col3 = st.columns(3)
+    border2, col1, col2, col3, border2 = st.columns([2, 2, 2, 2, 1])
 
     with col1:
         st.markdown(
