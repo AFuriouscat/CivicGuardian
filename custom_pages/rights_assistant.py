@@ -90,8 +90,7 @@ def show():
         chat_html = "<div class='chat-container'>"
         for msg in st.session_state.chat_history:
             css_class = "user-msg" if msg["role"] == "user" else "bot-msg"
-            # chat_html += f"<div class='{css_class}'>{msg['content']}</div>"
-            chat_html += f"<div class='{css_class}'>Hello. This feature is disabled for now as the github repository is available online and therefore makes the Gemini Key public which I can't allow. </div>"
+            chat_html += f"<div class='{css_class}'>{msg['content']}</div>"
         chat_html += "</div>"
         st.markdown(chat_html, unsafe_allow_html=True)
 
