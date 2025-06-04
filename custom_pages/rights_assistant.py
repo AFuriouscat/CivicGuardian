@@ -24,6 +24,8 @@ def show():
         "<small style='color:gray;'>"
         "Disclaimer: CivGuardian Bot is powered by AI and may generate inaccurate information. "
         "Please verify with a legal professional."
+        ""
+        "Hello. This feature is disabled for now as the github repository is available online and therefore makes the Gemini Key public which I can't allow. "
         "</small>",
         unsafe_allow_html=True
     )
